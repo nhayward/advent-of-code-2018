@@ -8,17 +8,15 @@ totalFound=false
 firstRepeatFound=false
 for ((i=0; i < ${#changes[@]}; i++)); do
   total="$(($total${changes[i]}))"
-  for item in ${frequencies[@]}; do
-    if [ $item = $total ]; then
-      echo "First repeat frequency: $total"
-      firstRepeatFound=true
-      if [ totalFound = true ]; then
-        break 3
-      else
-        break 2
+  if [ $firstRepeatFound = false ]; then
+    for item in ${frequencies[@]}; do
+      if [ $item = $total ]; then
+        echo "First repeat frequency: $total"
+        firstRepeatFound=true
+        break
       fi
-    fi
-  done
+    done
+  fi
   frequencies+=("$total")
   if [ $i = $((${#changes[@]}-1)) ]; then
     if [ $totalFound = false ]; then
@@ -26,7 +24,8 @@ for ((i=0; i < ${#changes[@]}; i++)); do
       totalFound=true
     fi
     if [ $firstRepeatFound = false ]; then
-      i=0
+      echo "repeating"
+      i=-1
     fi
   fi
 done
